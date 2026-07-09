@@ -50,28 +50,23 @@ To update to a new version, just follow any of the installation methods above. T
 
 ## Building
 
-**Status: not implemented yet.** The build scripts in this repository are currently stubs
-(see `build.sh`, `build_debian.sh`, `build_ubuntu.sh`, `build_src.sh`) and will exit
-non-zero until the ollama packaging logic is implemented.
-
 ### Build for single architecture
 ```sh
 ./build.sh <ollama_version> <build_version> <architecture>
-# Example: ./build.sh 1.2.3 1 arm64
+# Example: ./build.sh 0.31.2 1 arm64
 ```
 
 ### Build for all architectures
 ```sh
 ./build.sh <ollama_version> <build_version> all
-# Example: ./build.sh 1.2.3 1 all
+# Example: ./build.sh 0.31.2 1 all
 ```
 
 ## Roadmap
 
-- [ ] Implement build scripts (ollama is not yet packaged)
-- [ ] Produce a .deb package on GitHub Releases
-- [ ] Set up a debian mirror for easier updates
-- [ ] Multi-architecture support (amd64, arm64)
+- [x] Produce a .deb package on GitHub Releases
+- [x] Set up a debian mirror for easier updates
+- [x] Multi-architecture support (amd64, arm64)
 
 ## Disclaimer
 

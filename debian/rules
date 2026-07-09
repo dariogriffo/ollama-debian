@@ -1,0 +1,40 @@
+#!/usr/bin/make -f
+DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
+OLLAMA_VERSION := $(shell dpkg-parsechangelog -S Version | sed 's/[-~].*//')
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+
+override_dh_auto_build:
+	@arch="$(DEB_HOST_ARCH)"; \
+	case "$$arch" in \
+		amd64) OLLAMA_RELEASE="ollama-linux-amd64" ;; \
+		arm64) OLLAMA_RELEASE="ollama-linux-arm64" ;; \
+		*) echo "Unsupported architecture: $$arch"; exit 1 ;; \
+	esac; \
+	echo "Downloading $$OLLAMA_RELEASE for v$(OLLAMA_VERSION)..."; \
+	wget -q "https://github.com/ollama/ollama/releases/download/v$(OLLAMA_VERSION)/$$OLLAMA_RELEASE.tar.zst"; \
+	mkdir -p "$$OLLAMA_RELEASE"; \
+	tar --zstd -xf "$$OLLAMA_RELEASE.tar.zst" -C "$$OLLAMA_RELEASE"; \
+	rm -f "$$OLLAMA_RELEASE.tar.zst"; \
+	echo "$$OLLAMA_RELEASE" > .ollama_release_name
+
+override_dh_auto_install:
+	@OLLAMA_RELEASE=$$(cat .ollama_release_name); \
+	install -D -m 755 "$$OLLAMA_RELEASE/bin/ollama" debian/ollama/usr/bin/ollama; \
+	mkdir -p debian/ollama/usr/lib/ollama; \
+	cp -a "$$OLLAMA_RELEASE"/lib/ollama/. debian/ollama/usr/lib/ollama/
+
+override_dh_auto_test:
+
+override_dh_auto_clean:
+	@if [ -f .ollama_release_name ]; then \
+		OLLAMA_RELEASE=$$(cat .ollama_release_name); \
+		rm -rf "$$OLLAMA_RELEASE" .ollama_release_name || true; \
+	fi
+
+override_dh_strip:
+
+override_dh_shlibdeps:

@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e
+
+# Create ollama system user/group if they don't exist
+if ! id -u ollama > /dev/null 2>&1; then
+    adduser --system --shell /bin/false --group \
+        --home /usr/share/ollama --no-create-home ollama
+fi
+
+# Reload systemd so the new service file is recognized
+if command -v systemctl > /dev/null 2>&1 && systemctl is-system-running --quiet 2>/dev/null; then
+    systemctl daemon-reload || true
+fi
+
+echo "Ollama installed. To complete setup:"
+echo "  1. Start the service: sudo systemctl start ollama"
+echo "  2. Run a model: ollama run llama3.2"
+echo "  3. Enable on boot: sudo systemctl enable ollama"
+
+exit 0

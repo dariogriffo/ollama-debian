@@ -1,0 +1,17 @@
+Source: ollama
+Section: utils
+Priority: optional
+Maintainer: Dario Griffo <dariogriffo@gmail.com>
+Build-Depends: debhelper-compat (= 13), wget, ca-certificates, zstd
+Standards-Version: 4.6.2
+Homepage: https://github.com/ollama/ollama
+Rules-Requires-Root: no
+
+Package: ollama
+Architecture: amd64 arm64
+Depends: ${misc:Depends}, adduser
+Description: Get up and running with large language models locally
+ Ollama is a tool for running large language models locally. It bundles
+ model weights, configuration and data into a single package, and provides
+ a simple CLI and REST API to run and manage models such as Llama, Gemma,
+ Qwen and DeepSeek.
