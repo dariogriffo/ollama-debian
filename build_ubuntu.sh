@@ -62,7 +62,7 @@ build_architecture() {
     rm -f "${ollama_release}.tar.zst"
 
     # Build packages for appropriate Ubuntu distributions
-    declare -a arr=("jammy" "noble" "questing" "resolute")
+    declare -a arr=("jammy" "noble" "questing" "resolute" "stonking")
 
     for dist in "${arr[@]}"; do
         FULL_VERSION="$ollama_VERSION-${BUILD_VERSION}+${dist}_${build_arch}_ubu"
